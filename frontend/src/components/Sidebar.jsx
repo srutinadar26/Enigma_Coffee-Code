@@ -26,32 +26,33 @@ export default function Sidebar() {
   const [switcherOpen, setSwitcherOpen] = useState(false);
 
   return (
-    <aside className="flex h-full w-64 shrink-0 flex-col bg-ink-950 text-white/90">
-      <div className="px-5 pt-6 pb-4">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded bg-accent-gold/90 font-serif text-sm font-semibold text-ink-950">E</div>
-          <span className="font-serif text-lg tracking-tight text-white">Estate Assist</span>
+    <aside className="flex h-full w-64 shrink-0 flex-col bg-gradient-to-b from-ink-950 to-ink-900 text-slate-300 shadow-xl border-r border-ink-800/50 relative">
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
+      <div className="px-6 pt-8 pb-6 relative z-10">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-accent-gold to-yellow-600 shadow-lg font-serif text-lg font-bold text-ink-950">E</div>
+          <span className="font-serif text-xl font-medium tracking-tight text-white drop-shadow-sm">Estate Assist</span>
         </div>
       </div>
 
-      <div className="relative mx-4 mb-4">
+      <div className="relative mx-4 mb-6 z-10">
         <button
           onClick={() => setSwitcherOpen((s) => !s)}
-          className="flex w-full items-center justify-between rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 text-left text-sm hover:bg-white/[0.07]"
+          className="flex w-full items-center justify-between rounded-xl border border-white/5 bg-white/[0.03] px-4 py-3 text-left text-sm transition-all hover:bg-white/[0.06] hover:border-white/10 shadow-sm backdrop-blur-sm"
         >
           <div className="min-w-0">
-            <div className="truncate text-white/60 text-xs">Case</div>
-            <div className="truncate font-medium">{activeCase ? activeCase.deceased_name : 'No case yet'}</div>
+            <div className="truncate text-slate-400 text-[11px] font-semibold uppercase tracking-wider mb-0.5">Active Case</div>
+            <div className="truncate font-medium text-white">{activeCase ? activeCase.deceased_name : 'No case yet'}</div>
           </div>
-          <ChevronDown size={16} className="shrink-0 text-white/50" />
+          <ChevronDown size={16} className="shrink-0 text-slate-400" />
         </button>
         {switcherOpen && (
-          <div className="absolute z-20 mt-1 w-full rounded-md border border-black/10 bg-white py-1 text-ink-900 shadow-lg">
+          <div className="absolute z-20 mt-2 w-full rounded-xl border border-slate-200 bg-white py-1.5 text-slate-700 shadow-xl backdrop-blur-lg">
             {cases.map((c) => (
               <button
                 key={c.id}
                 onClick={() => { selectCase(c); setSwitcherOpen(false); }}
-                className="block w-full truncate px-3 py-2 text-left text-sm hover:bg-black/[0.04]"
+                className="block w-full truncate px-4 py-2.5 text-left text-sm transition hover:bg-slate-50 hover:text-ink-900 font-medium"
               >
                 {c.deceased_name}
               </button>
@@ -59,40 +60,45 @@ export default function Sidebar() {
             <NavLink
               to="/cases/new"
               onClick={() => setSwitcherOpen(false)}
-              className="block border-t border-black/[0.06] px-3 py-2 text-left text-sm font-medium text-brand-600 hover:bg-black/[0.04]"
+              className="block border-t border-slate-100 mt-1 pt-1 px-4 py-2.5 text-left text-sm font-semibold text-brand-600 transition hover:bg-brand-50"
             >
-              + New case
+              + Start new case
             </NavLink>
           </div>
         )}
       </div>
 
-      <nav className="flex-1 space-y-0.5 overflow-y-auto px-3">
+      <nav className="flex-1 space-y-1 overflow-y-auto px-4 relative z-10">
         {NAV.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition ${
-                isActive ? 'bg-white/10 text-white font-medium' : 'text-white/65 hover:bg-white/[0.06] hover:text-white'
+              `group flex items-center gap-3.5 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                isActive ? 'bg-white/10 text-white shadow-sm border border-white/5' : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'
               }`
             }
           >
-            <Icon size={17} strokeWidth={1.75} />
+            <Icon size={18} strokeWidth={2} className={`transition-colors ${
+              // eslint-disable-next-line react/prop-types
+              window.location.pathname === to ? 'text-accent-gold' : 'text-slate-500 group-hover:text-slate-300'
+            }`} />
             {label}
           </NavLink>
         ))}
       </nav>
 
-      <div className="mx-3 mb-4 mt-2 border-t border-white/10 pt-3">
-        <div className="flex items-center justify-between px-2">
-          <div className="min-w-0">
-            <div className="truncate text-sm font-medium">{user?.name}</div>
-            <div className="truncate text-xs text-white/50">{user?.email}</div>
+      <div className="mx-4 mb-6 mt-4 relative z-10">
+        <div className="rounded-xl border border-white/5 bg-white/[0.02] p-4 backdrop-blur-sm">
+          <div className="flex items-center justify-between">
+            <div className="min-w-0 pr-3">
+              <div className="truncate text-sm font-semibold text-white">{user?.name}</div>
+              <div className="truncate text-xs text-slate-400 mt-0.5">{user?.email}</div>
+            </div>
+            <button onClick={logout} title="Log out" className="shrink-0 rounded-lg p-2 text-slate-400 transition hover:bg-white/10 hover:text-white bg-white/5">
+              <LogOut size={16} />
+            </button>
           </div>
-          <button onClick={logout} title="Log out" className="rounded p-1.5 text-white/50 hover:bg-white/10 hover:text-white">
-            <LogOut size={16} />
-          </button>
         </div>
       </div>
     </aside>

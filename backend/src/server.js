@@ -5,7 +5,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 
-require('./config/db'); // initializes schema on first import
+const db = require('./config/db'); // initializes schema on first import
 
 const app = express();
 
@@ -50,6 +50,9 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Digital Estate & Financial Closure Assistant API running on port ${PORT}`);
-});
+
+db.initPromise.then(() => {
+  app.listen(PORT, () => {
+    console.log(`Digital Estate & Financial Closure Assistant API running on port ${PORT}`);
+  });
+}).catch(console.error);

@@ -2,15 +2,6 @@ const db = require('../config/db');
 const { v4: uuidv4 } = require('uuid');
 const { scorePriority } = require('./discovery');
 
-const insertReminder = db.prepare(`
-  INSERT INTO reminders (id, case_id, title, description, related_type, related_id, priority, due_date, auto_generated)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
-`);
-
-const existingAutoReminder = db.prepare(`
-  SELECT id FROM reminders WHERE case_id = ? AND related_type = ? AND related_id = ? AND status = 'pending'
-`);
-
 function daysFromNow(dateStr) {
   if (!dateStr) return null;
   const due = new Date(dateStr);
@@ -25,6 +16,15 @@ function daysFromNow(dateStr) {
  * while a pending one already exists.
  */
 function generateReminders(caseId) {
+  const insertReminder = db.prepare(`
+    INSERT INTO reminders (id, case_id, title, description, related_type, related_id, priority, due_date, auto_generated)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
+  `);
+
+  const existingAutoReminder = db.prepare(`
+    SELECT id FROM reminders WHERE case_id = ? AND related_type = ? AND related_id = ? AND status = 'pending'
+  `);
+
   const created = [];
 
   // 1. Missing/outdated nominees on assets
