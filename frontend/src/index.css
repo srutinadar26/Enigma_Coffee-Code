@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-[#faf8f4] text-ink-900 font-sans antialiased;
+}
+
+.font-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger-row {
+  @apply border-b border-black/[0.06] last:border-b-0;
+}
+
+.pill {
+  @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium;
+}
+
+.pill-urgent { @apply bg-rose-50 text-rose-700 ring-1 ring-rose-200; }
+.pill-high { @apply bg-amber-50 text-amber-800 ring-1 ring-amber-200; }
+.pill-medium { @apply bg-sky-50 text-sky-700 ring-1 ring-sky-200; }
+.pill-low { @apply bg-slate-50 text-slate-600 ring-1 ring-slate-200; }
+.pill-done { @apply bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200; }
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-md bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-800 disabled:opacity-50;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-md border border-black/10 bg-white px-4 py-2 text-sm font-medium text-ink-900 transition hover:bg-black/[0.03] disabled:opacity-50;
+}
+
+.btn-gold {
+  @apply inline-flex items-center justify-center gap-2 rounded-md bg-accent-gold px-4 py-2 text-sm font-medium text-white transition hover:brightness-95 disabled:opacity-50;
+}
+
+.input {
+  @apply w-full rounded-md border border-black/10 bg-white px-3 py-2 text-sm text-ink-900 placeholder:text-black/30 focus:border-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-700;
+}
+
+.label {
+  @apply mb-1 block text-sm font-medium text-ink-800;
+}
+
+.card {
+  @apply rounded-lg border border-black/[0.07] bg-white;
+}
